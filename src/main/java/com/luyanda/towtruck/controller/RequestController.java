@@ -26,9 +26,10 @@ public class RequestController {
         return service.getAllRequests();
     }
 
-    @PostMapping("/{id}/accept")
-    public Request acceptRequest(@PathVariable Long id) {
-        return service.acceptRequest(id);
+    // ✅ Accept request WITH driver
+    @PostMapping("/{requestId}/accept/{driverId}")
+    public Request acceptRequest(@PathVariable Long requestId, @PathVariable Long driverId) {
+        return service.acceptRequest(requestId, driverId);
     }
 
     @PostMapping("/{id}/complete")

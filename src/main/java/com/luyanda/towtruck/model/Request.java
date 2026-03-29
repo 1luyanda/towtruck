@@ -18,4 +18,9 @@ public class Request {
 
     @Enumerated(EnumType.STRING)
     private Status status;       // Status: PENDING, ACCEPTED, COMPLETED
+
+    @ ManyToOne
+    @JoinColumn(name ="driver_id")
+    private Driver driver;
+
 }

@@ -2,7 +2,9 @@ package com.luyanda.towtruck.service;
 
 import com.luyanda.towtruck.model.Request;
 import com.luyanda.towtruck.model.Status;
+import com.luyanda.towtruck.model.Driver; // crucial this one
 import com.luyanda.towtruck.repository.RequestRepository;
+import com.luyanda.towtruck.repository.DriverRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,12 @@ import java.util.List;
 public class RequestService {
 
     private final RequestRepository repository;
+    private final DriverRepository driverRepository;
 
-    public RequestService(RequestRepository repository) {
+    // ONLY ONE constructor
+    public RequestService(RequestRepository repository, DriverRepository driverRepository) {
         this.repository = repository;
+        this.driverRepository = driverRepository;
     }
 
     public Request createRequest(Request request) {
@@ -25,9 +30,13 @@ public class RequestService {
         return repository.findAll();
     }
 
-    public Request acceptRequest(Long id) {
-        Request request = repository.findById(id).orElseThrow();
+    public Request acceptRequest(Long requestId, Long driverId) {
+        Request request = repository.findById(requestId).orElseThrow();
+        Driver driver = driverRepository.findById(driverId).orElseThrow();
+
         request.setStatus(Status.ACCEPTED);
+        request.setDriver(driver);
+
         return repository.save(request);
     }
 
